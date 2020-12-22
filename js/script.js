@@ -13,3 +13,25 @@ con difficoltà 0 => tra 1 e 100
 con difficoltà 1 =>  tra 1 e 80
 con difficoltà 2 => tra 1 e 50 */
 
+//Faccio generare al computer 16 numeri casuali che non devono ripetersi
+var bombs = [];
+var g = true;
+
+while (bombs.length < 5) { //!NUMERO TEST - DA CAMBIARE!
+    var number = randomizer(1, 25); //!NUMERO TEST - DA CAMBIARE!
+
+    if (bombs.includes(number) == false){
+        bombs.push(number);
+    }
+}
+
+console.log(bombs);
+
+// Creo prompt per utente dove inserirà i numeri per giocare
+
+
+// - FUNZIONI
+//Genera numeri random (min e max inclusi)
+function randomizer(min, max) {
+    return Math.floor(Math.random() * (max - min + 1) ) + min;
+  }
