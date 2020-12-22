@@ -13,11 +13,45 @@ con difficoltà 0 => tra 1 e 100
 con difficoltà 1 =>  tra 1 e 80
 con difficoltà 2 => tra 1 e 50 */
 
-// Faccio generare al computer 16 numeri casuali che non devono ripetersi
+//Variabili principali
+// Numeri di bombe presenti nel campo minato
+var forbiddenNumb = 16;
+// Variabili per determinare in maniera automatica "l'ampiezza" del campo minato
+var minNumber = 1;
+var maxNumber;
+// Variabile da inserire manualmente per determinare la difficoltà della partita
+var difficulty = prompt('Digita il livello di difficoltà: 0 - 1 - 2');
+// Variabile contenente un coefficiente per determinare il punteggio ad ogni livello
+var difficultyFactor = 1;
+
+// | Creo lo switch per i livelli di difficoltà
+switch (difficulty) {
+    case '0':
+        maxNumber = 100;
+        break;
+    case '1':
+        maxNumber = 80;
+        difficultyFactor = 2;
+        break;
+    case '2':
+        maxNumber = 50;
+        difficultyFactor = 5;
+        break;
+}
+
+// Calcolo possibilità utente in base alla difficoltà della partita
+var chances = maxNumber - forbiddenNumb;
+
+console.log('Hai scelto la difficoltà: ' + difficulty);
+console.log('Numeri proibiti: ' + forbiddenNumb);
+console.log('NUmeri da ' + minNumber + ' a ' + maxNumber);
+console.log('Hai ' + chances + ' possibilità!');
+
+// | Faccio generare al computer 16 numeri casuali che non devono ripetersi
 var bombs = [];
 
-while (bombs.length < 5) { //!NUMERO TEST - DA CAMBIARE!
-    var bombsNumber = randomizer(1, 25); //!NUMERO TEST - DA CAMBIARE!
+while (bombs.length < forbiddenNumb) {
+    var bombsNumber = randomizer(minNumber, maxNumber);
 
     if (bombs.includes(bombsNumber) == false) {
         bombs.push(bombsNumber);
@@ -27,16 +61,15 @@ while (bombs.length < 5) { //!NUMERO TEST - DA CAMBIARE!
 console.log(bombs);
 
 //Creo un contenitore di riferimento per semplificare selezioni sbagliate nel prompt successivo
-var arrRif = numContainer(1, 25);
+var arrRif = numContainer(minNumber, maxNumber);
 
-// Creo prompt per utente dove inserirà i numeri per giocare
+// | Creo prompt per utente dove inserirà i numeri per giocare
 // Array contenente numeri inseriti dal giocatore
 var userNumberArr = [];
 // Variabile sentinella 
 var sentinel = true;
-var message;
 
-while (userNumberArr.length < 20 && sentinel) { //!NUMERO TEST!
+while (userNumberArr.length < chances && sentinel) {
     var userNumber = parseInt(prompt('Inserisci un numero:'));
 
     if (arrRif.includes(userNumber) == false) {
@@ -58,14 +91,17 @@ while (userNumberArr.length < 20 && sentinel) { //!NUMERO TEST!
 
 }
 
-if (userNumberArr.length == 20) {
+// | Condizioni per determinare vittoria o sconfitta
+if (userNumberArr.length == chances) {
     alert('COMPLIMENTI!! HAI VINTO!');
 } else {
-    alert('Hai colpito una mina! Il tuo punteggio è di: ' + (userNumberArr.length - 1) + ' pt.');
-    console.log('Hai colpito una mina! Il tuo punteggio è di: ' + (userNumberArr.length - 1) + ' pt.');
+    alert("Hai colpito una mina!");
+    alert('Il tuo punteggio è di: ' + (userNumberArr.length * difficultyFactor) + ' pt.');
+    console.log("%cHai colpito una mina!", "color:red");
+    console.log('Il tuo punteggio è di: ' + (userNumberArr.length * difficultyFactor) + ' pt.');
 }
 
-/* console.log(userNumberArr); */
+console.log(userNumberArr);
 
 // - FUNZIONI
 // Genera numeri random (min e max inclusi)
